@@ -35,8 +35,10 @@ namespace W13___Senin
         public DataTable Available = new DataTable();
         public DataTable Nationality = new DataTable();
         public DataTable namaTeam = new DataTable();
-        public string simpanIDBuatNanti = "";
+        public string SelectedValue = "";
         public int posisi = 0;
+        public int posisiAwal = 0;
+        public int posisiAkhir = 0;
         
            
             
@@ -47,25 +49,16 @@ namespace W13___Senin
             sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
             mySqlAdapter = new MySqlDataAdapter(sqlCommand);
             mySqlAdapter.Fill(Data);
-            
+
             DataMantap();
 
-            //cb_Team.DataSource = Data;
-            //cb_Team.ValueMember = "team_name";
-            //cb_Team.DisplayMember = "team_name";
-
-            //cb_Nationality.DataSource = Data;
-            //cb_Nationality.ValueMember = "nation";
-            //cb_Nationality.DisplayMember = "nation";
-
-
-            sqlQuery = "select nation, nationality_id from nationality";
+            sqlQuery = "select nation as `nationality`, nationality_id `nationality_id` from nationality";
             sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
             mySqlAdapter = new MySqlDataAdapter(sqlCommand);
             mySqlAdapter.Fill(Nationality);
             cb_Nationality.DataSource = Nationality;
             cb_Nationality.ValueMember = "nationality_id";
-            cb_Nationality.DisplayMember = "nation";
+            cb_Nationality.DisplayMember = "nationality";
             cb_Nationality.SelectedValue = Data.Rows[posisi][4].ToString();
 
             
@@ -77,9 +70,7 @@ namespace W13___Senin
             cb_Team.ValueMember = "team_id";
             cb_Team.DisplayMember = "team_name";
             cb_Team.SelectedValue = Data.Rows[posisi][6].ToString();
-            simpanIDBuatNanti = cb_Team.SelectedValue.ToString();
-
-       
+            SelectedValue = cb_Team.SelectedValue.ToString();
         }
         
         private void btn_Cancel_Click(object sender, EventArgs e)
@@ -100,7 +91,7 @@ namespace W13___Senin
         private void btn_Next_Click(object sender, EventArgs e)
         {
             posisi++;
-            if (posisi > 858)
+            if (posisi > Data.Rows.Count-1)
             {
                 posisi = posisi -1;
                 DataMantap();
@@ -110,7 +101,7 @@ namespace W13___Senin
             {
                 DataMantap();
             }
-            simpanIDBuatNanti = cb_Team.SelectedValue.ToString();
+            SelectedValue = cb_Team.SelectedValue.ToString();
         }
         private void btn_Prev_Click(object sender, EventArgs e)
         {
@@ -125,34 +116,39 @@ namespace W13___Senin
             {
                 DataMantap();
             }
-            simpanIDBuatNanti = cb_Team.SelectedValue.ToString();
+            SelectedValue = cb_Team.SelectedValue.ToString();
         }
         private void btn_PrevAll_Click(object sender, EventArgs e)
         {
-            try
-            {
+            
                 posisi = 0;
                 DataMantap();
-            }
-            catch (Exception ex)
+                posisiAwal = posisiAwal + 1;
+
+            if (posisiAwal > 1)
             {
                 MessageBox.Show("Data sudah paling awal!");
+                posisiAwal = 0;
             }
-            simpanIDBuatNanti = cb_Team.SelectedValue.ToString();
+               
+            
+            SelectedValue = cb_Team.SelectedValue.ToString();
         }
         private void btn_NextAll_Click(object sender, EventArgs e)
         {
-            try
-            {
-                posisi = Data.Rows.Count - 1;
-                DataMantap();
+           
+            posisi = Data.Rows.Count - 1;
+            DataMantap();
+            posisiAkhir = posisiAkhir + 1;
 
-            }
-            catch (Exception ex)
+            if (posisiAkhir > 1)
             {
                 MessageBox.Show("Data sudah paling akhir!");
+                posisiAkhir = 0;
             }
-            simpanIDBuatNanti = cb_Team.SelectedValue.ToString();
+
+
+            SelectedValue = cb_Team.SelectedValue.ToString();
         }
 
         private void btn_Save_Click(object sender, EventArgs e)
@@ -177,7 +173,7 @@ namespace W13___Senin
             try
             {
                 DataTable teamNum = new DataTable();
-                string simpanID = simpanIDBuatNanti;
+                string simpanID = SelectedValue;
                 
                 sqlQuery = $"select p.player_name as `Name`, p.team_number as `Number` from team t, player p where p.team_id = t.team_id and t.team_id = '{simpanID}' having p.team_number = {num_TeamNumber.Value.ToString()}";
                 sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
@@ -196,7 +192,7 @@ namespace W13___Senin
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show("Terdapat error dengan: \n" + ex.Message);
             }
         }
     }

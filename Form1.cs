@@ -11,7 +11,7 @@ using MySql.Data.MySqlClient;
 
 namespace W13___Senin
 {
-    public partial class Form1 : Form
+    public partial class Form_Ngedit : Form
     {
         private void DataMantap()
         {
@@ -22,7 +22,7 @@ namespace W13___Senin
             cb_Team.DisplayMember = Data.Rows[posisi][4].ToString();
             num_TeamNumber.Value = Convert.ToInt16(Data.Rows[posisi][5]);
         }
-        public Form1()
+        public Form_Ngedit()
         {
             InitializeComponent();
         }
@@ -52,13 +52,13 @@ namespace W13___Senin
 
             DataMantap();
 
-            sqlQuery = "select nation as `nationality`, nationality_id `nationality_id` from nationality";
+            sqlQuery = "select nation, nationality_id from nationality";
             sqlCommand = new MySqlCommand(sqlQuery, sqlConnect);
             mySqlAdapter = new MySqlDataAdapter(sqlCommand);
             mySqlAdapter.Fill(Nationality);
             cb_Nationality.DataSource = Nationality;
             cb_Nationality.ValueMember = "nationality_id";
-            cb_Nationality.DisplayMember = "nationality";
+            cb_Nationality.DisplayMember = "nation";
             cb_Nationality.SelectedValue = Data.Rows[posisi][4].ToString();
 
             
@@ -72,7 +72,6 @@ namespace W13___Senin
             cb_Team.SelectedValue = Data.Rows[posisi][6].ToString();
             SelectedValue = cb_Team.SelectedValue.ToString();
         }
-        
         private void btn_Cancel_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -87,7 +86,6 @@ namespace W13___Senin
         {
             
         }
-
         private void btn_Next_Click(object sender, EventArgs e)
         {
             posisi++;
@@ -120,7 +118,6 @@ namespace W13___Senin
         }
         private void btn_PrevAll_Click(object sender, EventArgs e)
         {
-            
                 posisi = 0;
                 DataMantap();
                 posisiAwal = posisiAwal + 1;

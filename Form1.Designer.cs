@@ -1,6 +1,6 @@
 ﻿namespace W13___Senin
 {
-    partial class Form1
+    partial class Form_Ngedit
     {
         /// <summary>
         /// Required designer variable.
@@ -220,7 +220,7 @@
             this.cb_Nationality.TabIndex = 19;
             this.cb_Nationality.SelectedIndexChanged += new System.EventHandler(this.cb_Nationality_SelectedIndexChanged);
             // 
-            // Form1
+            // Form_Ngedit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -244,8 +244,9 @@
             this.Controls.Add(this.btn_PrevAll);
             this.Controls.Add(this.btn_Save);
             this.Controls.Add(this.btn_Cancel);
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Name = "Form_Ngedit";
+            this.Text = "Form orang dalam FIFA";
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.num_TeamNumber)).EndInit();
             this.ResumeLayout(false);
